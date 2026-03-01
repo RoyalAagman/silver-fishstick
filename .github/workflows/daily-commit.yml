@@ -1,0 +1,26 @@
+name: Daily Scheduled Commit
+
+on:
+  schedule:
+    - cron: '30 2 * * *'   # Runs every day at 02:30 UTC
+  workflow_dispatch:         # Also lets you trigger it manually
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run step for 21f1003029@ds.study.iitm.ac.in
+        run: echo "Daily commit step for 21f1003029@ds.study.iitm.ac.in"
+
+      - name: Create daily commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "Daily update: $(date)" >> daily-log.txt
+          git add daily-log.txt
+          git commit -m "Automated daily commit - $(date)"
+          git push
